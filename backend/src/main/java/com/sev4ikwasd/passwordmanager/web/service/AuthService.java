@@ -5,7 +5,7 @@ import com.sev4ikwasd.passwordmanager.web.model.SignupRequest;
 import reactor.core.publisher.Mono;
 
 public interface AuthService {
-    Mono<String> login(LoginRequest request);
+    Mono<String> login(Mono<LoginRequest> request);
 
-    Mono<Object> signup(SignupRequest request);
+    Mono<Object> signup(Mono<SignupRequest> request);
 }

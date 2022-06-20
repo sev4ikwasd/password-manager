@@ -1,7 +1,6 @@
 package com.sev4ikwasd.passwordmanager.web;
 
 import com.sev4ikwasd.passwordmanager.web.handler.AuthHandler;
-import lombok.NonNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
