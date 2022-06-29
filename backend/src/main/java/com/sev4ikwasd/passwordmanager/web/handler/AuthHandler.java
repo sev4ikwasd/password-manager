@@ -20,18 +20,21 @@ public class AuthHandler {
     private final MediaType json = MediaType.APPLICATION_JSON;
 
     private final AuthService authService;
+    private final ValidationUtil validationUtil;
 
     public Mono<ServerResponse> login(ServerRequest request) {
-        Mono<LoginRequest> loginRequestMono = request.bodyToMono(LoginRequest.class).doOnNext(ValidationUtil::validate);
-        return authService.login(loginRequestMono)
+        return request.bodyToMono(LoginRequest.class)
+                .doOnNext(validationUtil::validate)
+                .flatMap(authService::login)
                 .flatMap(token -> ServerResponse.ok().contentType(json)
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .bodyValue(ToMapUtil.stringsToMap("authToken", token)));
     }
 
     public Mono<ServerResponse> signup(ServerRequest request) {
-        Mono<SignupRequest> signupRequestMono = request.bodyToMono(SignupRequest.class).doOnNext(ValidationUtil::validate);
-        return authService.signup(signupRequestMono)
+        return request.bodyToMono(SignupRequest.class)
+                .doOnNext(validationUtil::validate)
+                .flatMap(authService::signup)
                 .flatMap(data -> ServerResponse.ok().contentType(json).build());
     }
 }
