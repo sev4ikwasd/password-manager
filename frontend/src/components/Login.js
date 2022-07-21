@@ -20,6 +20,9 @@ function Login() {
   const [username] = useState(() => {
     return localStorage.getItem("username") || undefined;
   });
+  const [remember] = useState(() => {
+    return Boolean(localStorage.getItem("remember"));
+  });
   const [errorOpen, setErrorOpen] = useState(false);
   const auth = useAuth();
   const navigate = useNavigate();
@@ -36,8 +39,10 @@ function Login() {
       const origin = location.state?.from?.pathname || "/";
       if (data.get("remember")) {
         localStorage.setItem("username", data.get("username"));
+        localStorage.setItem("remember", true);
       } else {
         localStorage.removeItem("username");
+        localStorage.removeItem("remember");
       }
       navigate(origin, {replace: true});
     }, () => {
@@ -88,7 +93,7 @@ function Login() {
             label="Password"
             name="password"
             autoComplete="current-password"/>
-          <FormControlLabel control={<Checkbox id="remember" name="remember" color="primary"/>}
+          <FormControlLabel control={<Checkbox id="remember" name="remember" color="primary" defaultChecked={remember}/>}
                             label="Remember username"
           />
           <Button
